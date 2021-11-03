@@ -3,11 +3,6 @@
 
 namespace Microsoft.Azure.Devices.ProtocolGateway.Mqtt
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
-    using System.Threading;
-    using System.Threading.Tasks;
     using DotNetty.Codecs.Mqtt.Packets;
     using DotNetty.Common;
     using DotNetty.Common.Utilities;
@@ -18,6 +13,11 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.Mqtt
     using Microsoft.Azure.Devices.ProtocolGateway.Instrumentation;
     using Microsoft.Azure.Devices.ProtocolGateway.Messaging;
     using Microsoft.Azure.Devices.ProtocolGateway.Mqtt.Persistence;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     interface IConnectionIdentityProvider
     {
@@ -890,7 +890,7 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.Mqtt
         /// <param name="context"><see cref="IChannelHandlerContext" /> instance.</param>
         void CompleteConnect(IChannelHandlerContext context)
         {
-            CommonEventSource.Log.Info("Connection established.", this.ChannelId, this.Id);
+            CommonEventSource.Log.Info($"Connection established. Keep-alive timeout {this.keepAliveTimeout}", this.ChannelId, this.Id);
 
             if (this.keepAliveTimeout > TimeSpan.Zero)
             {
@@ -932,7 +932,7 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.Mqtt
             TimeSpan elapsedSinceLastActive = DateTime.UtcNow - self.lastClientActivityTime;
             if (elapsedSinceLastActive > self.keepAliveTimeout)
             {
-                ShutdownOnError(context, string.Empty, new ProtocolGatewayException(ErrorCode.KeepAliveTimedOut, "Keep Alive timed out."));
+                ShutdownOnError(context, string.Empty, new ProtocolGatewayException(ErrorCode.KeepAliveTimedOut, $"Keep Alive timed out {self.keepAliveTimeout}"));
                 return;
             }
 
