@@ -3,6 +3,11 @@
 
 namespace Microsoft.Azure.Devices.ProtocolGateway.Mqtt
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Threading;
+    using System.Threading.Tasks;
     using DotNetty.Codecs.Mqtt.Packets;
     using DotNetty.Common;
     using DotNetty.Common.Utilities;
@@ -13,11 +18,6 @@ namespace Microsoft.Azure.Devices.ProtocolGateway.Mqtt
     using Microsoft.Azure.Devices.ProtocolGateway.Instrumentation;
     using Microsoft.Azure.Devices.ProtocolGateway.Messaging;
     using Microsoft.Azure.Devices.ProtocolGateway.Mqtt.Persistence;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     interface IConnectionIdentityProvider
     {
